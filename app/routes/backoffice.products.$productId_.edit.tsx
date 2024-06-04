@@ -1,10 +1,12 @@
 import type { ActionFunctionArgs, LoaderFunctionArgs } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 import { Form, useLoaderData } from "@remix-run/react";
+import invariant from "tiny-invariant";
 
 import { getProduct, updateProduct } from "~/models/product.server";
 
 export const action = async ({ params, request }: ActionFunctionArgs) => {
+  invariant(params.productId, "Missing productId param");
   const formData = await request.formData();
   const updates = Object.fromEntries(formData);
   const price = parseFloat(formData.get("price"));
